@@ -121,34 +121,7 @@ Contoh:
 http://127.0.0.1:5000
 ```
 
-## Pengujian Prediksi
-
-Prediksi juga dapat dilakukan menggunakan script `predict_final_test.py`.
-
-Contoh:
-
-```bash
-py predict_final_test.py --model "Apple iPhone 17" --storage 256GB --kota Bandung --kondisi Bekas
-```
-
-Contoh untuk kondisi baru:
-
-```bash
-py predict_final_test.py --model "Apple iPhone 17" --storage 256GB --kota Bandung --kondisi Baru
-```
-
-Output akan memberikan informasi seperti:
-
-```text
-Model              : Apple iPhone 17
-Estimasi harga     : Rp 13,375,070
-Rentang harga      : Rp 10,795,536 — Rp 15,954,604
-MAPE               : ±19.3%
-```
-
 ## Cara Kerja Sistem
-
-Secara sederhana, proses prediksi berjalan seperti berikut:
 
 ```text
 Input Pengguna
@@ -176,8 +149,6 @@ Model menerima beberapa fitur numerik dan kategorikal, kemudian memprosesnya mel
 
 ### Fitur Numerik
 
-Beberapa fitur numerik yang digunakan antara lain:
-
 * RAM
 * Storage
 * Kapasitas baterai
@@ -188,144 +159,10 @@ Beberapa fitur numerik yang digunakan antara lain:
 
 ### Fitur Kategorikal
 
-Beberapa fitur kategorikal meliputi:
-
 * Brand
 * Network type
 * Kota
 * Kondisi
-
-## Rentang Harga
-
-Selain menghasilkan satu nilai prediksi, sistem juga memberikan rentang harga.
-
-Rentang tersebut dihitung berdasarkan nilai prediksi dan nilai MAPE model.
-
-Secara sederhana:
-
-```text
-Harga minimum = Prediksi × (1 - MAPE)
-
-Harga maksimum = Prediksi × (1 + MAPE)
-```
-
-Contohnya, apabila model menghasilkan:
-
-```text
-Prediksi = Rp10.000.000
-MAPE     = 20%
-```
-
-maka rentang yang diberikan adalah:
-
-```text
-Rp8.000.000 — Rp12.000.000
-```
-
-Rentang ini merupakan estimasi berdasarkan performa model, bukan jaminan harga pasar sebenarnya.
-
-## Model Machine Learning
-
-Model disimpan dalam:
-
-```text
-price_model_v2.joblib
-```
-
-Model menggunakan preprocessing untuk menangani fitur numerik dan kategorikal sebelum melakukan prediksi.
-
-Pipeline secara umum:
-
-```text
-Raw Input
-    |
-    v
-Data Preprocessing
-    |
-    +---- Numerical Features
-    |
-    +---- Categorical Features
-    |
-    v
-XGBoost Regressor
-    |
-    v
-Predicted Price
-```
-
-## API Endpoint
-
-Aplikasi Flask menyediakan endpoint untuk melakukan prediksi harga.
-
-Contoh request:
-
-```http
-POST /predict/
-```
-
-Data dapat dikirim melalui form sesuai dengan field yang disediakan oleh aplikasi.
-
-Contoh konsep request:
-
-```text
-model       = Apple iPhone 17
-storage     = 256GB
-kota        = Bandung
-kondisi     = Bekas
-```
-
-API kemudian mengembalikan hasil prediksi harga.
-
-## Deployment
-
-Project ini dapat dijalankan secara online menggunakan platform deployment seperti Railway.
-
-Konfigurasi utama deployment:
-
-```text
-Procfile
-requirements.txt
-app.py
-price_model_v2.joblib
-```
-
-Procfile:
-
-```text
-web: python app.py
-```
-
-`requirements.txt` digunakan untuk meng-install seluruh dependency yang diperlukan oleh aplikasi.
-
-## Tujuan Project
-
-Project ini dibuat sebagai implementasi Machine Learning untuk mempelajari bagaimana model prediksi dapat digunakan dalam sebuah aplikasi nyata.
-
-Tujuan utama project:
-
-1. Mengolah data spesifikasi smartphone.
-2. Melakukan preprocessing data.
-3. Melatih model Machine Learning.
-4. Mengintegrasikan model ke dalam Flask API.
-5. Menghasilkan estimasi harga smartphone.
-6. Melakukan deployment API agar dapat diakses secara online.
-
-## Catatan
-
-Hasil prediksi merupakan **estimasi dari model Machine Learning** dan tidak dapat dianggap sebagai harga jual pasti.
-
-Harga smartphone sebenarnya dapat dipengaruhi oleh berbagai faktor lain seperti:
-
-* Kondisi fisik
-* Battery health
-* Kelengkapan perangkat
-* Garansi
-* Riwayat penggunaan
-* Kredibilitas penjual
-* Kondisi pasar
-* Waktu penjualan
-
-Oleh karena itu, hasil API sebaiknya digunakan sebagai **referensi estimasi harga**, bukan sebagai satu-satunya dasar dalam menentukan harga jual atau beli.
 
 ## Status Project
 
